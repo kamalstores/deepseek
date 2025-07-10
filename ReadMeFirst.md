@@ -72,3 +72,21 @@ and some property of css
 
 ######################################################
 In promptbox jsx
+we add some text and a form , some icons etc.
+and some property of css
+
+####################################################
+We use clerk for user Authentication as we can easliy management and integrate user authenticate
+
+ADD clerkprovider in page.js then 
+
+#####################################################
+Make new file in context folder where we store function and variable which is used by components files
+
+
+#####################################################
+Now we gonna edit or delete chats and store so we make a ChatLabel file in components folder 
+
+
+#####################################################
+Now we gonna show messages so we make a Message file in components folder 

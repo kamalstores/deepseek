@@ -1,5 +1,7 @@
 'use client';
 import { assets } from "@/assets/assets";
+import Message from "@/components/Message";
+import PromptBox from "@/components/PromptBox";
 import Sidebar from "@/components/Sidebar";
 import Image from "next/image";
 import { useState } from "react";
@@ -35,18 +37,22 @@ export default function Home() {
               <>
               <div className="flex items-center gap-3">
                 <Image className="h-16" src={assets.logo_icon} alt="" />
-                <p className="text-2xl font medium">Hi, I'm DeepSeek.</p>
+                <p className="text-2xl font-medium">Hi, I'm DeepSeek.</p>
               </div>
               <p className="text-sm mt-2">How can I help you today?</p>
               </>
             ):
             (
-            <div></div>
+            <div>
+              <Message role='user' content='What is next js' />
+            </div>
           )
           }
 
           {/* prompt box  */}
-          <p className="text-xs absolute bottom-1 text-gray-500">AI-generted, for reference only</p>
+          <PromptBox isLoading={isLoading} setIsLoading={setIsLoading} />
+
+          <p className="text-xs absolute bottom-1 text-gray-500">AI-generated, for reference only</p>
 
           </div>
  

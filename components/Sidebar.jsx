@@ -1,8 +1,18 @@
 import { assets } from "@/assets/assets";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
+import { useClerk, UserButton } from "@clerk/nextjs";
+import { useAppContext } from "@/context/AppContext";
+import ChatLabel from "./ChatLabel";
 
 const Sidebar = ({expand,setExpand}) => {
+
+    const {openSignIn} = useClerk()
+    const {user} = useAppContext()
+
+    // to expand and collapse the side bar
+    const [openMenu, setOpenMenu] = useState({id:0, open: false});
+
     return (
         <div className={`flex flex-col justify-between bg-[#212327] pt-7 transition-all z-50 max-md:absolute max-md:h-screen ${expand ? 'p-4 w-64' : 'md:w-20 w-0 max-md:overflow-hidden'}`}>
             <div>
@@ -17,7 +27,7 @@ const Sidebar = ({expand,setExpand}) => {
                         {/* it will be hidden on medium and its above sizes and add block so it will be visual*/}
                         <Image className="hidden md:block w-7" src = {expand ? assets.sidebar_close_icon : assets.sidebar_icon} alt=''/>
 
-                        <div className={`absolute w-max ${expand ? "left-1/2 -translate-x-1/2 top-12" : "-top-12 left-0"} opacity-0 group-hover:opacity-100 transition ng-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none`}>
+                        <div className={`absolute w-max ${expand ? "left-1/2 -translate-x-1/2 top-12" : "-top-12 left-0"} opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none`}>
                             {expand ? 'Close sidebar' : 'Open sidebar'}
                             <div className={`w-3 h-3 absolute bg-black rotate-45 ${expand ? "left-1/2 -top-1.5 -translate-x-1/2" : "left-4 -bottom-1.5"}`}>
                             </div>
@@ -26,27 +36,29 @@ const Sidebar = ({expand,setExpand}) => {
                 </div>
 
                 {/* Add button for chat */}
-                <button className={`mt-8 flex items-center justify-center cursor-pointer ${expand ? "bg-primary hover:opacity-90 rounded-2xl gap-2 p-.5 w-max" : "group relative h-9 w-9 mx-auto hover:bg-gray-500/30 rounded-lg"}`}>
+                <button className={`mt-8 flex items-center justify-center cursor-pointer ${expand ? "bg-primary hover:opacity-90 rounded-2xl gap-2 p-2.5 w-max" : "group relative h-9 w-9 mx-auto hover:bg-gray-500/30 rounded-lg"}`}>
                     <Image className={expand ? 'w-6' : 'w-7'} src={expand ? assets.chat_icon : assets.chat_icon_dull} alt=""/>
 
-                    {/* Add text of new chat  */}
-                    <div className="absolute w-max -top-1 -right-1 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none">
-                        New chat
-                        <div className="w-3 h-3 absolute bg-black rotate-45 left-4 -bottom-1.5"></div>
-                    </div>
+                    {/* Add text of new chat - only show tooltip when collapsed */}
+                    {!expand && (
+                        <div className="absolute w-max -top-1 -right-1 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none">
+                            New chat
+                            <div className="w-3 h-3 absolute bg-black rotate-45 left-4 -bottom-1.5"></div>
+                        </div>
+                    )}
 
                     {/* Add some text  */}
-                    {expand && <p className="text-white text font-medium">New chat</p>}
+                    {expand && <p className="text-white font-medium">New chat</p>}
 
                 </button>
 
                 {/* For messages  */}
-                <div className={`mt-8 text-white/5 text-sm ${expand ? "block" : "hidden"}`}>
+                <div className={`mt-8 text-white/80 text-sm ${expand ? "block" : "hidden"}`}>
                     <p className="my-1">Recents</p>
                     
                     {/* When prompt comes so for label name  */}
                     {/* chatlabel  */}
-
+                    <ChatLabel openMenu={openMenu} setOpenMenu={setOpenMenu} />
                 </div>
 
 
@@ -69,9 +81,14 @@ const Sidebar = ({expand,setExpand}) => {
                 </div>
                 
                 {/* User icon and profile  */}
-                <div className={`flex items-center ${expand ? "hover:bg-white/10 rounded-lg" : "justify-center w-full"} gap-3 text-white/60 text-sm p-2 cursor-pointer`}>
-                    <Image src={assets.profile_icon} alt="" className="w-7" />
-                    {expand && <span>My Profile</span>}
+                <div onClick={user ? null : openSignIn}
+                className={`flex items-center ${expand ? "hover:bg-white/10 rounded-lg" : "justify-center w-full"} gap-3 text-white/60 text-sm p-2 cursor-pointer`}>
+                    <Image 
+                        className="w-7 h-7" 
+                        src={assets.profile_icon} 
+                        alt="Profile"
+                    />
+                    {expand && <span>{user ? "My Profile" : "Sign In"}</span>}
                 </div>
             </div>
 
