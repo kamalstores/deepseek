@@ -52,8 +52,9 @@ const Sidebar = ({expand,setExpand}) => {
 
             </div>
 
-            {/* Profile icon , login link etc */}
-            <div>
+            {/* Bottom section with Get App and Profile grouped together */}
+            <div className="space-y-2">
+                {/* Get App section */}
                 <div className={`flex items-center cursor-pointer group relative ${expand ? "gap-1 text-white/80 text-sm p-2.5 border border-primary rounded-lg hover:bg-white/10 cursor-pointer" : "h-10 w-10 mx-auto hover:bg-gray-500/30 rounded-lg"}`}>
                     <Image className={expand ? "w-5" : "w-6.5 mx-auto"} src={expand ? assets.phone_icon : assets.phone_icon_dull} alt=""/>
                     {/* Barcode  */}
@@ -66,11 +67,12 @@ const Sidebar = ({expand,setExpand}) => {
                     </div>
                     {expand && <><span>Get App</span> <Image alt="" src={assets.new_icon}/></>}
                 </div>
-            </div>
-            {/* User icon and profile  */}
-            <div className={`flex items-center ${expand ? "hover:bg-white/10 rounded-lg" : "justify-center w-full"} gap-3 text-white/60 text-sm p-2 mt-2 cursor-pointer`}>
-                <Image src={assets.profile_icon} alt="" className="w-7" />
-                {expand && <span>My Profile</span>}
+                
+                {/* User icon and profile  */}
+                <div className={`flex items-center ${expand ? "hover:bg-white/10 rounded-lg" : "justify-center w-full"} gap-3 text-white/60 text-sm p-2 cursor-pointer`}>
+                    <Image src={assets.profile_icon} alt="" className="w-7" />
+                    {expand && <span>My Profile</span>}
+                </div>
             </div>
 
 
