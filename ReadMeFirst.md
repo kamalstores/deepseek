@@ -76,6 +76,7 @@ we add some text and a form , some icons etc.
 and some property of css
 
 ####################################################
+Make account on clerk
 We use clerk for user Authentication as we can easliy management and integrate user authenticate
 
 ADD clerkprovider in page.js then 
@@ -90,3 +91,75 @@ Now we gonna edit or delete chats and store so we make a ChatLabel file in compo
 
 #####################################################
 Now we gonna show messages so we make a Message file in components folder 
+
+
+
+
+#########################################################
+##########################################################
+##########################################################
+
+Backend
+
+#########################################################
+##########################################################
+##########################################################
+
+We install some libraries like
+axios --> used to make HTTP requests, allowing applications to interact with APIs and servers to fetch or send data
+mongoose --> to connect with mongoDB database
+openai --> can make api call and get answer from ai
+svix --> manage clerk and simplifies the process of sending and receiving webhooks, enabling reliable, secure, and scalable webhook delivery
+
+frontend libraries
+prismjs --> to highlight the syntax
+react-hot-toast --> for display toast notification
+react-markdown --> structure the response got from ai
+
+for verification they are installed or not we can check at
+package.json --> dependencies
+
+#################################################
+Create account on mongoDB atlas to store user and chat data
+
+
+const mongoose = require('mongoose');
+const uri = "mongodb+srv://kamalsnitkkr:kamalsnitkkr@cluster0.wpiu7zd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
+
+async function run() {
+  try {
+    // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
+    await mongoose.connect(uri, clientOptions);
+    await mongoose.connection.db.admin().command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await mongoose.disconnect();
+  }
+}
+run().catch(console.dir);
+
+
+copy the part upto .net (mongodb+srv://kamalsnitkkr:<db_password>@cluster0.wpiu7zd.mongodb.net)
+and paste into .env file as MONGODB_URI , set password and add /deepseek in last of it
+
+################################################################################
+make configuration file named db.js to connect with mongo db 
+now we create mongoDB model so because of this model we can store data in mongoDB database ... so create file user.js in model folder
+
+#######################################################
+create schema and models like (user model) in user.js file 
+
+######################################################
+when user modify data from clerk then it should update the mongoDB database so set up clerk web hooks
+
+to do this we make folder
+in app -> make api folder -> make clerk folder -> make route.js file
+
+in this file we write POST function and add a secret key which is present in .env file(we make this)
+and add some line of code to get data of user and do different things from this data
+
+We will deploy this webhook to Clerk dashboard because Clerk will send events to this endpoint and we will handle them accordingly.
+This is how Clerk will send events to our application and we will handle them accordingly.
