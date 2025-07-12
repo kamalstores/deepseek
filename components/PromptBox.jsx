@@ -17,7 +17,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
             {/* text area  */}
 
             <textarea 
-            className='outline-none w-full resize-none overflow-hidden break-words bg-transparent text-white placeholder-gray-400'
+            className='outline-none w-full resize-none overflow-hidden break-words bg-transparent'
             rows={2}
             placeholder='Message DeepSeek' required
             onChange={(e) => setPrompt(e.target.value)} value={prompt}/>

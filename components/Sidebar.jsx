@@ -41,19 +41,19 @@ const Sidebar = ({expand,setExpand}) => {
 
                     {/* Add text of new chat - only show tooltip when collapsed */}
                     {!expand && (
-                        <div className="absolute w-max -top-1 -right-1 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none">
+                        <div className="absolute w-max -top-12 -right-12 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none">
                             New chat
                             <div className="w-3 h-3 absolute bg-black rotate-45 left-4 -bottom-1.5"></div>
                         </div>
                     )}
 
                     {/* Add some text  */}
-                    {expand && <p className="text-white font-medium">New chat</p>}
+                    {expand && <p className="text-white text font-medium">New chat</p>}
 
                 </button>
 
                 {/* For messages  */}
-                <div className={`mt-8 text-white/80 text-sm ${expand ? "block" : "hidden"}`}>
+                <div className={`mt-8 text-white/25 text-sm ${expand ? "block" : "hidden"}`}>
                     <p className="my-1">Recents</p>
                     
                     {/* When prompt comes so for label name  */}
@@ -82,12 +82,23 @@ const Sidebar = ({expand,setExpand}) => {
                 
                 {/* User icon and profile  */}
                 <div onClick={user ? null : openSignIn}
-                className={`flex items-center ${expand ? "hover:bg-white/10 rounded-lg" : "justify-center w-full"} gap-3 text-white/60 text-sm p-2 cursor-pointer`}>
-                    <Image 
-                        className="w-7 h-7" 
+                className={`flex items-center ${expand ? "hover:bg-white/10 rounded-lg" : "justify-center w-full"} gap-3 text-white/60 text-sm p-2 mt-2 cursor-pointer`}>
+
+
+                    {/* User button from Clerk */}
+                    {
+                        user ? <UserButton />
+                        : <Image className="w-7" src={assets.profile_icon} alt=""/>
+                    }
+
+
+
+
+                    {/* <Image 
+                        className="w-7" 
                         src={assets.profile_icon} 
                         alt="Profile"
-                    />
+                    /> */}
                     {expand && <span>{user ? "My Profile" : "Sign In"}</span>}
                 </div>
             </div>

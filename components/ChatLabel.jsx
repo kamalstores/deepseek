@@ -31,18 +31,17 @@ const ChatLabel = ({openMenu, setOpenMenu}) => {
                 <Image 
                     src={assets.three_dots} 
                     alt='' 
-                    className="w-4 hidden group-hover:block cursor-pointer"
-                    onClick={handleMenuClick}
-                />
+                    className={`w-4 ${openMenu.open ? '' : 'hidden'} group-hover:block`}
+                    onClick={handleMenuClick} />
 
                 {/* ... for delete and edit options */}
                 <div className={`absolute ${openMenu.open ? 'block' : 'hidden'} -right-36 top-6 bg-gray-700 rounded-xl w-max p-2 transition-opacity z-10`}>
-                    <div className="flex items-center gap-3 hover:bg-white/10 px-3 py-2 rounded-lg cursor-pointer">
+                    <div className="flex items-center gap-3 hover:bg-white/10 px-3 py-2 rounded-lg">
                         <Image src={assets.pencil_icon} alt='' className='w-4'/>
                         <p>Rename</p>
                     </div>
 
-                    <div className="flex items-center gap-3 hover:bg-white/10 px-3 py-2 rounded-lg cursor-pointer">
+                    <div className="flex items-center gap-3 hover:bg-white/10 px-3 py-2 rounded-lg">
                         <Image src={assets.delete_icon} alt='' className='w-4'/>
                         <p>Delete</p>
                     </div>
