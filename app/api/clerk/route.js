@@ -2,7 +2,7 @@ import { Webhook } from "svix";
 import { connectDB } from "@/config/db";
 import User from "@/models/User";
 import { headers } from "next/headers";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 
 // create post function
@@ -50,7 +50,7 @@ export async function POST(req) {
             break;
     }
 
-    return NextRequest.json({message: "Event received"})
+    return NextResponse.json({message: "Event received"})
 
 }
 
