@@ -4,12 +4,12 @@ let cached = global.mongoose || {conn: null, promise: null};
 
 // create mongodb connection function
 
-export async function connectDB(){
+export default async function connectDB(){
     if(cached.conn) {
         return cached.conn;
     }
     if(!cached.promise) {
-        cached.promise = (await mongoose.connect(process.env.MONGODB_URI)).then ((mongoose) => mongoose);
+        cached.promise = mongoose.connect(process.env.MONGODB_URI).then ((mongoose) => mongoose);
     }
     try {
         cached.conn = await cached.promise;
