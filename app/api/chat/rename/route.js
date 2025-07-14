@@ -21,7 +21,7 @@ export async function POST(request) {
         await connectDB();
         await Chat.findOneAndUpdate(
             { _id: chatId, userId },
-            { name },
+            { name }
         );
         
 

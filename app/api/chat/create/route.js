@@ -19,7 +19,7 @@ export async function POST(request) {
             userId,
             messages: [],
             name: "New Chat"
-        }
+        };
 
         // connect to the database and create a new chat
         await connectDB();
