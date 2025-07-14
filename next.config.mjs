@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   devIndicators: {
-    position: 'bottom-right',
+    buildActivity: false,
+    buildActivityPosition: 'bottom-right',
   },
   // Disable development overlay in production
   experimental: {

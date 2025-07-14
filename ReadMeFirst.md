@@ -163,31 +163,3 @@ and add some line of code to get data of user and do different things from this 
 
 We will deploy this webhook to Clerk dashboard because Clerk will send events to this endpoint and we will handle them accordingly.
 This is how Clerk will send events to our application and we will handle them accordingly.
-
-
-we will deploy the project into git and from this we deploy into vercel. from vercel link we add this into clerk and add /app/clerk into it. from there we get SECRET_KEY and we paste into env file and vercel.
-
-then if we add user , data will be stored in mongoDB
-
-
-########################################################
-now we store data of chat. so we make new file Chat.js
-in this we store name, messages, userid, timestamp in database
-
-########################################################
-
-We will create some file in api
-to create new chat so we make file in app -> api -> chat -> create -> route.js
-and make get folder to have all chats of user
-and make rename folder to rename the chat
-and make delete folder to delete the chat
-and make ai folder to call deepseek api
-(from openrouter, we can get api)
-
-########################################################
-
-after writing code in api we integrate this with frontend
-so in AppContext.js we made function
-
-we add toaster in layout.js for error because toast notifications are used to show success and error messages
-

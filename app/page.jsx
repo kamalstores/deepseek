@@ -3,7 +3,6 @@ import { assets } from "@/assets/assets";
 import Message from "@/components/Message";
 import PromptBox from "@/components/PromptBox";
 import Sidebar from "@/components/Sidebar";
-import { useAppContext } from "@/context/AppContext";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -12,11 +11,13 @@ export default function Home() {
   // to expand and collapse the side bar
   const[expand, setExpand] = useState(false)
 
+  // for message
+  const[messages, setMessages] = useState([])
+
   // for loading
   const[isLoading, setIsLoading] = useState(false)
 
-  // Get selected chat and messages from context
-  const {selectedChat} = useAppContext()
+
 
   return (
     <div>
@@ -32,7 +33,7 @@ export default function Home() {
               <Image className="opacity-70" src={assets.chat_icon} alt=""/>
             </div>
 
-            {!selectedChat || selectedChat.messages.length === 0 ? (
+            {messages.length === 0 ? (
               <>
               <div className="flex items-center gap-3">
                 <Image className="h-16" src={assets.logo_icon} alt="" />
@@ -42,14 +43,8 @@ export default function Home() {
               </>
             ):
             (
-            <div className="flex-1 overflow-y-auto w-full max-w-4xl">
-              {selectedChat.messages.map((message, index) => (
-                <Message 
-                  key={index} 
-                  role={message.role} 
-                  content={message.content} 
-                />
-              ))}
+            <div>
+              <Message role='user' content='What is next js' />
             </div>
           )
           }
