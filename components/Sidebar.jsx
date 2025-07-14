@@ -8,7 +8,7 @@ import ChatLabel from "./ChatLabel";
 const Sidebar = ({expand,setExpand}) => {
 
     const {openSignIn} = useClerk()
-    const {user} = useAppContext()
+    const {user, createNewChat, chats, selectedChat, setSelectedChat} = useAppContext()
 
     // to expand and collapse the side bar
     const [openMenu, setOpenMenu] = useState({id:0, open: false});
@@ -36,7 +36,7 @@ const Sidebar = ({expand,setExpand}) => {
                 </div>
 
                 {/* Add button for chat */}
-                <button className={`mt-8 flex items-center justify-center cursor-pointer ${expand ? "bg-primary hover:opacity-90 rounded-2xl gap-2 p-2.5 w-max" : "group relative h-9 w-9 mx-auto hover:bg-gray-500/30 rounded-lg"}`}>
+                <button onClick={() => user ? createNewChat() : openSignIn} className={`mt-8 flex items-center justify-center cursor-pointer ${expand ? "bg-primary hover:opacity-90 rounded-2xl gap-2 p-2.5 w-max" : "group relative h-9 w-9 mx-auto hover:bg-gray-500/30 rounded-lg"}`}>
                     <Image className={expand ? 'w-6' : 'w-7'} src={expand ? assets.chat_icon : assets.chat_icon_dull} alt=""/>
 
                     {/* Add text of new chat - only show tooltip when collapsed */}
@@ -58,7 +58,16 @@ const Sidebar = ({expand,setExpand}) => {
                     
                     {/* When prompt comes so for label name  */}
                     {/* chatlabel  */}
-                    <ChatLabel openMenu={openMenu} setOpenMenu={setOpenMenu} />
+                    {chats.map((chat, index) => (
+                        <ChatLabel 
+                            key={chat._id} 
+                            chat={chat} 
+                            isSelected={selectedChat?._id === chat._id}
+                            onSelect={() => setSelectedChat(chat)}
+                            openMenu={openMenu} 
+                            setOpenMenu={setOpenMenu} 
+                        />
+                    ))}
                 </div>
 
 
