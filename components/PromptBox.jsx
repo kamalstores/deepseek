@@ -28,13 +28,17 @@ const PromptBox = ({setIsLoading, isLoading}) => {
         const promptCopy = prompt;
         try {
             e.preventDefault();
+            
+            console.log("selectedChat:", selectedChat);
+            console.log("user:", user);
+            
             if(!user) {
                 return toast.error("Please sign in to send a message");
             }
             if(isLoading) {
                 return toast.error("Wait for the previous message to finish");
             }
-            if(!selectedChat) {
+            if(!selectedChat || !selectedChat._id) {
                 return toast.error("Please select a chat first");
             }
 
@@ -61,7 +65,12 @@ const PromptBox = ({setIsLoading, isLoading}) => {
             }));
 
 
+            if(!selectedChat || !selectedChat._id) {
+                return toast.error("Please select a chat first");
+            }
+
             // api call to send prompt
+            console.log("Sending to API - chatId:", selectedChat._id, "prompt:", prompt);
             const {data} = await axios.post('/api/chat/ai' , {
                 chatId: selectedChat._id,
                 prompt

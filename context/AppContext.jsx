@@ -1,7 +1,6 @@
 "use client";
 import { useAuth, useUser } from "@clerk/nextjs";
 import axios from "axios";
-import { set } from "mongoose";
 import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -22,7 +21,7 @@ export const AppContextProvider = ({ children }) => {
     const {getToken} = useAuth();
 
     const [chats, setChats] = useState([]); 
-    const [selectedChat, setSelectedChat] = useState(null);
+    const [selectedChat, setSelectedChat] = useState({ messages: [] });
 
     // function to create a new chat
     const createNewChat = async () => {
@@ -41,54 +40,59 @@ export const AppContextProvider = ({ children }) => {
                 }
             });
 
-            // check if the response is successful
+            // Check if chat was created successfully
             if(response.data.success) {
-                // after creating a new chat, fetch user chats
-                fetchUserChats();
+                // Don't call fetchUserChats here to avoid recursion
+                // Let the calling function handle refetching
+                return response.data;
             } else {
-                toast.error(response.data.message);
+                toast.error(response.data.message || "Failed to create chat");
+                return null;
             }
 
         } catch (error) {
             toast.error(error.message);
+            return null;
         }
     }
 
     // function to fetch user chats
-    const fetchUserChats = async () => {
+    const fetchUserChats = async (skipCreateNew = false) => {
         try {
             // get the token from Clerk
             const token = await getToken();
 
             // use axios to make a GET request to fetch user chats
-            const response = await axios.get('/api/chat/get', {
+            const {data} = await axios.get('/api/chat/get', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
 
             // check data response & if success then set chats
-            if(response.data.success){
-                console.log(response.data.data);
-                setChats(response.data.data);
+            if(data.success){
+                console.log(data.data);
+                setChats(data.data);
 
-                // is user has no chats then set selected chat to null
-                if(response.data.data.length === 0) {
+                // is user has no chats then create one (but prevent infinite loop)
+                if(data.data.length === 0 && !skipCreateNew) {
                     await createNewChat();
-                    return fetchUserChats();
+                    // Call fetchUserChats again but with skipCreateNew=true to prevent infinite loop
+                    return fetchUserChats(true);
                 }
-                else{
+                else if(data.data.length > 0) {
                     // sort chats by updatedAt
-                    response.data.data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+                    data.data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
                     // set recently updated chat as selected chat
-                    setSelectedChat(response.data.data[0]);
+                    setSelectedChat(data.data[0]);
 
-                    console.log(response.data.data[0]);
+                    console.log(data.data[0]);
                 }
+                // If still no chats after creating one, keep the default empty selectedChat
             }
             else {
-                toast.error(response.data.message);
+                toast.error(data.message);
             }
             
 

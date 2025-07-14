@@ -35,7 +35,7 @@ export default function RootLayout({ children }) {
             <Toaster toastOptions={
               {
                 success : {style: {background: "black", color: "white"}},
-                error : {style: {background: "black", color: "white"}},
+                error : {style: {background: "black", color: "white"}}
               }
 
             } />

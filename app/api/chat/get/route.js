@@ -13,7 +13,7 @@ export async function GET(req){
 
         // if userId is not present, return an error response
         if (!userId) {
-            return NextResponse.json({ success: false, error: "User not authenticated" });
+            return NextResponse.json({ success: false, message: "User not authenticated" });
         }
 
         // connect to the database and fetch chats for the user
