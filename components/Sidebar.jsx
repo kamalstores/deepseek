@@ -8,7 +8,7 @@ import ChatLabel from "./ChatLabel";
 const Sidebar = ({expand,setExpand}) => {
 
     const {openSignIn} = useClerk()
-    const {user, createNewChat, chats, selectedChat, setSelectedChat} = useAppContext()
+    const {user, chats, createNewChat} = useAppContext()
 
     // to expand and collapse the side bar
     const [openMenu, setOpenMenu] = useState({id:0, open: false});
@@ -36,16 +36,14 @@ const Sidebar = ({expand,setExpand}) => {
                 </div>
 
                 {/* Add button for chat */}
-                <button onClick={() => user ? createNewChat() : openSignIn} className={`mt-8 flex items-center justify-center cursor-pointer ${expand ? "bg-primary hover:opacity-90 rounded-2xl gap-2 p-2.5 w-max" : "group relative h-9 w-9 mx-auto hover:bg-gray-500/30 rounded-lg"}`}>
+                <button onClick={createNewChat} className={`mt-8 flex items-center justify-center cursor-pointer ${expand ? "bg-primary hover:opacity-90 rounded-2xl gap-2 p-2.5 w-max" : "group relative h-9 w-9 mx-auto hover:bg-gray-500/30 rounded-lg"}`}>
                     <Image className={expand ? 'w-6' : 'w-7'} src={expand ? assets.chat_icon : assets.chat_icon_dull} alt=""/>
 
                     {/* Add text of new chat - only show tooltip when collapsed */}
-                    {!expand && (
-                        <div className="absolute w-max -top-12 -right-12 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none">
+                    <div className="absolute w-max -top-12 -right-12 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none">
                             New chat
                             <div className="w-3 h-3 absolute bg-black rotate-45 left-4 -bottom-1.5"></div>
-                        </div>
-                    )}
+                    </div>
 
                     {/* Add some text  */}
                     {expand && <p className="text-white text font-medium">New chat</p>}
@@ -58,19 +56,9 @@ const Sidebar = ({expand,setExpand}) => {
                     
                     {/* When prompt comes so for label name  */}
                     {/* chatlabel  */}
-                    {chats.map((chat, index) => (
-                        <ChatLabel 
-                            key={chat._id} 
-                            chat={chat} 
-                            isSelected={selectedChat?._id === chat._id}
-                            onSelect={() => setSelectedChat(chat)}
-                            openMenu={openMenu} 
-                            setOpenMenu={setOpenMenu} 
-                        />
-                    ))}
+                    {chats.map((chat, index) => <ChatLabel key={index} name ={chat.name} id={chat._id} openMenu={openMenu} setOpenMenu={setOpenMenu}/>)}
+                    
                 </div>
-
-
             </div>
 
             {/* Bottom section with Get App and Profile grouped together */}
@@ -96,7 +84,7 @@ const Sidebar = ({expand,setExpand}) => {
 
                     {/* User button from Clerk */}
                     {
-                        user ? <UserButton />
+                        user ? <UserButton/ >
                         : <Image className="w-7" src={assets.profile_icon} alt=""/>
                     }
 
@@ -108,7 +96,7 @@ const Sidebar = ({expand,setExpand}) => {
                         src={assets.profile_icon} 
                         alt="Profile"
                     /> */}
-                    {expand && <span>{user ? "My Profile" : "Sign In"}</span>}
+                    {expand && <span>My Profile</span>}
                 </div>
             </div>
 

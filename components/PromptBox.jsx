@@ -34,9 +34,9 @@ const PromptBox = ({setIsLoading, isLoading}) => {
             if(isLoading) {
                 return toast.error("Wait for the previous message to finish");
             }
-            if(!selectedChat) {
-                return toast.error("Please select a chat first");
-            }
+            // if(!selectedChat) {
+            //     return toast.error("Please select a chat first");
+            // }
 
             setIsLoading(true);
             setPrompt("");
@@ -74,7 +74,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
                 const message = data.data.content;
                 const messageTokens = message.split(" ");
                 let assistantMessage = {
-                    role: "assistant",
+                    role: 'assistant',
                     content: "",
                     timestamp: Date.now(),
                 };
@@ -86,7 +86,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
 
                 for(let i = 0; i < messageTokens.length; i++) {
                     setTimeout(() => {
-                       assistantMessage.content = messageTokens.slice(0, i+1).join(" ");
+                       assistantMessage.content = messageTokens.slice(0, i + 1).join(" ");
                        setSelectedChat((prev) => {
                             const updatedMessages = [
                                 ...prev.messages.slice(0, -1), assistantMessage
@@ -116,7 +116,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
         // Prompt Box 
 
         <form onSubmit={sendPrompt}
-        className={`w-full ${false ? "max-w-3xl" : "max-w-2xl"} bg-[#404045] p-4 rounded-3xl mt-4 transition-all`}>
+        className={`w-full ${selectedChat?.messages.length > 0 ? "max-w-3xl" : "max-w-2xl"} bg-[#404045] p-4 rounded-3xl mt-4 transition-all`}>
 
             {/* text area  */}
 

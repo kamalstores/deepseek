@@ -1,9 +1,10 @@
+export const maxDuration = 60;
 import Chat from "@/models/Chat";
 import { NextResponse } from "next/server";
 import connectDB from "@/config/db";        
 import { getAuth } from "@clerk/nextjs/server";
 import OpenAI from "openai";
-export const maxDuration = 60;
+
 
 
 // Initialize OpenAI client with DeepSeek API and base URL
@@ -22,7 +23,7 @@ export async function POST(req){
 
         // if userId is not present, return an error response
         if (!userId) {
-            return NextResponse.json({ success: false, error: "User not authenticated" });
+            return NextResponse.json({ success: false, message: "User not authenticated" });
         }
 
 
@@ -30,7 +31,7 @@ export async function POST(req){
         await connectDB();
 
         // fetch the chat from the database by chatId and userId
-        const data = await Chat.findOne({ _id: chatId, userId });
+        const data = await Chat.findOne({userId, _id: chatId});
 
         // create a new message object
         const userPrompt = {
@@ -47,7 +48,7 @@ export async function POST(req){
         const completion = await openai.chat.completions.create({
             messages: [{ role: "user", content: prompt }],
             model: "deepseek-chat",
-            store: true
+            store: true,
         });
 
         // add the AI response to the chat messages

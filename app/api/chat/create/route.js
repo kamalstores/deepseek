@@ -11,7 +11,7 @@ export async function POST(request) {
 
         // if userId is not present, return an error response
         if (!userId) {
-            return NextResponse.json({ success: false, error: "User not authenticated" });
+            return NextResponse.json({ success: false, message: "User not authenticated" });
         }
 
         // prepare the chat data to be saved in the database

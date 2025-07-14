@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";      // Add Inter Font in this project
 import "./globals.css";
+import "./prism.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { AppContextProvider } from "@/context/AppContext";
 import { Toaster } from "react-hot-toast";

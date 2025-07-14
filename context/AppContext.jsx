@@ -35,19 +35,13 @@ export const AppContextProvider = ({ children }) => {
             const token = await getToken();
 
             // use axios to make a POST request to create a new chat
-            const response = await axios.post('/api/chat/create', {}, {
+            await axios.post('/api/chat/create', {}, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
 
-            // check if the response is successful
-            if(response.data.success) {
-                // after creating a new chat, fetch user chats
-                fetchUserChats();
-            } else {
-                toast.error(response.data.message);
-            }
+            fetchUserChats();
 
         } catch (error) {
             toast.error(error.message);
@@ -61,34 +55,34 @@ export const AppContextProvider = ({ children }) => {
             const token = await getToken();
 
             // use axios to make a GET request to fetch user chats
-            const response = await axios.get('/api/chat/get', {
+            const {data} = await axios.get('/api/chat/get', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
 
             // check data response & if success then set chats
-            if(response.data.success){
-                console.log(response.data.data);
-                setChats(response.data.data);
+            if(data.success){
+                console.log(data.data);
+                setChats(data.data);
 
                 // is user has no chats then set selected chat to null
-                if(response.data.data.length === 0) {
+                if(data.data.length === 0) {
                     await createNewChat();
                     return fetchUserChats();
                 }
                 else{
                     // sort chats by updatedAt
-                    response.data.data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+                    data.data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
                     // set recently updated chat as selected chat
-                    setSelectedChat(response.data.data[0]);
+                    setSelectedChat(data.data[0]);
 
-                    console.log(response.data.data[0]);
+                    console.log(data.data[0]);
                 }
             }
             else {
-                toast.error(response.data.message);
+                toast.error(data.message);
             }
             
 

@@ -16,7 +16,7 @@ const ChatSchema = new mongoose.Schema(
                 content: {type: String, required: true},
                 // timestamp of the message
                 timestamp: {type: Number, required: true},
-            }
+            },
         ],
 
         // userId to associate the chat with a user
