@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
 import React, { useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 const ChatLabel = ({openMenu, setOpenMenu, id, name}) => {
     

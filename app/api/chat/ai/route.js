@@ -3,15 +3,12 @@ import Chat from "@/models/Chat";
 import { NextResponse } from "next/server";
 import connectDB from "@/config/db";        
 import { getAuth } from "@clerk/nextjs/server";
-import OpenAI from "openai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 
-
-// Initialize OpenAI client with DeepSeek API and base URL
-const openai = new OpenAI({
-        baseURL: 'https://api.deepseek.com',
-        apiKey: process.env.DEEPSEEK_API_KEY
-});
+// Initialize Gemini AI client
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 export async function POST(req){
     try {
@@ -31,7 +28,17 @@ export async function POST(req){
         await connectDB();
 
         // fetch the chat from the database by chatId and userId
-        const data = await Chat.findOne({userId, _id: chatId});
+        let data = await Chat.findOne({userId, _id: chatId});
+
+        // if chat doesn't exist, create a new one
+        if (!data) {
+            data = new Chat({
+                _id: chatId,
+                userId,
+                messages: [],
+                name: "New Chat"
+            });
+        }
 
         // create a new message object
         const userPrompt = {
@@ -44,18 +51,17 @@ export async function POST(req){
         // add the user prompt to the chat messages
         data.messages.push(userPrompt);
 
-        // call the DeepSeek API to get a response
-        const completion = await openai.chat.completions.create({
-            messages: [{ role: "user", content: prompt }],
-            model: "deepseek-chat",
-            store: true,
-        });
+        // call the Gemini API to get a response
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const aiResponse = response.text();
 
-        // add the AI response to the chat messages
-        const message = completion.choices[0].message;
-
-        // add timestamp to the AI response
-        message.timestamp = Date.now();
+        // create AI message object
+        const message = {
+            role: "assistant",
+            content: aiResponse,
+            timestamp: Date.now()
+        };
 
         // push the AI response to the chat messages
         data.messages.push(message);
