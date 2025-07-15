@@ -123,27 +123,6 @@ package.json --> dependencies
 Create account on mongoDB atlas to store user and chat data
 
 
-const mongoose = require('mongoose');
-const uri = "mongodb+srv://kamalsnitkkr:kamalsnitkkr@cluster0.wpiu7zd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
-const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
-
-async function run() {
-  try {
-    // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
-    await mongoose.connect(uri, clientOptions);
-    await mongoose.connection.db.admin().command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await mongoose.disconnect();
-  }
-}
-run().catch(console.dir);
-
-
-copy the part upto .net (mongodb+srv://kamalsnitkkr:<db_password>@cluster0.wpiu7zd.mongodb.net)
-and paste into .env file as MONGODB_URI , set password and add /deepseek in last of it
 
 ################################################################################
 make configuration file named db.js to connect with mongo db 
